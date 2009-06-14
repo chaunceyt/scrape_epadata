@@ -9,20 +9,38 @@ function string_to_filename($word) {
 
 //EPA.gov
 //download all of the .exe files
-$url = 'http://www.epa.gov/tri/tridata/tri07/data/';
-$response = file_get_contents($url);
+$years = array('2005','2006','2007');
 
-$year="2007";
+$year = $argv[1];
 
-if($year == "2005") {
-    preg_match_all('#<td width="25%"><a href="../../tri05/data/(.*)">#', $response, $urls);
-    $siteurl = 'http://www.epa.gov/tri/tridata/tri05/data/';
+if(!in_array($year, $years)) {
+    die('ERROR: Invalid Year - we only support 2005 - 2007'."\n");
 }
 
+//deal with patterns for each year
+
+//2005
+if($year == "2005") {
+    $siteurl = 'http://www.epa.gov/tri/tridata/tri05/data/';
+    $response = file_get_contents($siteurl);
+    preg_match_all('#<td width="25%"><a href="../../tri05/data/(.*)">#', $response, $urls);
+}
+
+//2006
+if($year == "2006") {
+    $siteurl = 'http://www.epa.gov/tri/tridata/tri06/data/';
+    $response = file_get_contents($siteurl);
+    preg_match_all('#<td width="25%"><a href="../../tri06/data/(.*)">#', $response, $urls);
+
+}
+
+//2007
 if($year == "2007") {
+    $url = 'http://www.epa.gov/tri/tridata/tri05/data/';
+    $siteurl = 'http://www.epa.gov/tri/tridata/tri07/data/Statedata07/';
+    $response = file_get_contents($url);
     preg_match_all('#<td width="25%"><a href="../../tri07/data/(.*)">#', $response, $urls);
     preg_match_all('#<td width="25%"><a href="Statedata07/(.*)">#', $response, $urls);
-    $siteurl = 'http://www.epa.gov/tri/tridata/tri07/data/Statedata07/';
 }
 
 foreach($urls[1] as $url_str) {
@@ -93,7 +111,8 @@ foreach($files as $file) {
 
     //print_r($tablefields);
     $end = end($tablefields);
-
+    
+    //TODO: fix - broken
     //echo "Creating SQL Create script for file: " . $file ."...\n";
     //echo "TABLENAME: epa_data".$file_type."\n";
     $str = "CREATE TABLE epa_data".$file_type."  ("."\n";
