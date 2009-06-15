@@ -11,7 +11,7 @@ $type5_str ='TRIFID	DOCUMENT CONTROL NUMBER	CAS NUMBER	CHEMICAL NAME	CLASSIFICAT
 //taken from: http://us3.php.net/manual/en/function.preg-replace.php#87058
 function string_to_filename($word) {
     $tmp = preg_replace('/^\W+|\W+$/', '', trim($word)); // remove all non-alphanumeric chars at begin & end of string
-    $tmp = preg_replace('/\s+/', '_', $tmp); // compress internal whitespace and replace with _
+    $tmp = preg_replace('/\s+/', '', $tmp); // compress internal whitespace and replace with _
     return strtolower(preg_replace('/\W/', '', $tmp)); // remove all non-alphanumeric chars except _ and -
 }
 

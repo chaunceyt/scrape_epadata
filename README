@@ -1,2 +1,9 @@
 EPA.gov .exe scrape to csv
 
+dump to csv:
+./scrape_epadata.php 2005
+./scrape_epadata.php 2006
+./scrape_epadata.php 2007
+
+dump table create
+php -f createtables.php > table.sql
