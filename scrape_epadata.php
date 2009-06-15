@@ -7,6 +7,18 @@ function string_to_filename($word) {
     return strtolower(preg_replace('/\W/', '', $tmp)); // remove all non-alphanumeric chars except _ and -
 }
 
+function getFile($fileurl, $file)
+{
+    $fp = fopen($file, "w");
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_FILE, $fp); 
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_URL, $fileurl);
+    curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);
+}
+
 //EPA.gov
 //download all of the .exe files
 $years = array('2005','2006','2007');
@@ -47,7 +59,8 @@ foreach($urls[1] as $url_str) {
 
     //if we already have the file don't download it again
     if(!file_exists($url_str)) { 
-        exec('wget '.$siteurl.$url_str);
+        getFile($site_url.$url_str, $url_str);
+        //exec('wget '.$siteurl.$url_str);
         if(file_exists($url_str)) {
             if(!exec('unzip ./'.$url_str)) {
                 echo 'Error unzipping file';
