@@ -61,7 +61,7 @@ foreach($urls[1] as $url_str) {
     if(!file_exists($url_str)) { 
         //TODO: getFile saving file but zip is broken
         //getFile($site_url.$url_str, $url_str);
-        //exec('wget '.$siteurl.$url_str);
+        exec('wget '.$siteurl.$url_str);
         if(file_exists($url_str)) {
             if(!exec('unzip ./'.$url_str)) {
                 echo 'Error unzipping file';
@@ -80,7 +80,8 @@ foreach($files as $file) {
     $_state = explode("_", $file);
 
     $filedata = file($file);
-
+    
+    //TODO: fix table create code - buggy (100% broken)
     //detect the file type
     if(preg_match('/_1_/',$file)) {
         //File Type 1: Facility, Chemical, Releases and Other Waste Management Summary Information
@@ -129,6 +130,7 @@ foreach($files as $file) {
     //TODO: fix - broken
     //echo "Creating SQL Create script for file: " . $file ."...\n";
     //echo "TABLENAME: epa_data".$file_type."\n";
+    /*
     $str = "CREATE TABLE epa_data".$file_type."  ("."\n";
     foreach($tablefields as $field) {
 
@@ -145,6 +147,7 @@ foreach($files as $file) {
     $fp = fopen("epa_data".$file_type.".sql", "w");
     fwrite($fp, $str);
     fclose($fp);
+    */
     //echo $str;
     $state_str = $_state[0];   
     //echo "Creating csv file: " . $state_str."_".$year.$file_type.".csv";
