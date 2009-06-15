@@ -59,7 +59,8 @@ foreach($urls[1] as $url_str) {
 
     //if we already have the file don't download it again
     if(!file_exists($url_str)) { 
-        getFile($site_url.$url_str, $url_str);
+        //TODO: getFile saving file but zip is broken
+        //getFile($site_url.$url_str, $url_str);
         //exec('wget '.$siteurl.$url_str);
         if(file_exists($url_str)) {
             if(!exec('unzip ./'.$url_str)) {
